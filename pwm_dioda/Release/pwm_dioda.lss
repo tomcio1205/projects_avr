@@ -1,0 +1,88 @@
+
+pwm_dioda.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000007a  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         000006cc  00000000  00000000  000000d0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      00000054  00000000  00000000  0000079c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	19 c0       	rjmp	.+50     	; 0x36 <__bad_interrupt>
+   4:	18 c0       	rjmp	.+48     	; 0x36 <__bad_interrupt>
+   6:	17 c0       	rjmp	.+46     	; 0x36 <__bad_interrupt>
+   8:	16 c0       	rjmp	.+44     	; 0x36 <__bad_interrupt>
+   a:	15 c0       	rjmp	.+42     	; 0x36 <__bad_interrupt>
+   c:	14 c0       	rjmp	.+40     	; 0x36 <__bad_interrupt>
+   e:	13 c0       	rjmp	.+38     	; 0x36 <__bad_interrupt>
+  10:	12 c0       	rjmp	.+36     	; 0x36 <__bad_interrupt>
+  12:	11 c0       	rjmp	.+34     	; 0x36 <__bad_interrupt>
+  14:	10 c0       	rjmp	.+32     	; 0x36 <__bad_interrupt>
+  16:	0f c0       	rjmp	.+30     	; 0x36 <__bad_interrupt>
+  18:	0e c0       	rjmp	.+28     	; 0x36 <__bad_interrupt>
+  1a:	0d c0       	rjmp	.+26     	; 0x36 <__bad_interrupt>
+  1c:	0c c0       	rjmp	.+24     	; 0x36 <__bad_interrupt>
+  1e:	0b c0       	rjmp	.+22     	; 0x36 <__bad_interrupt>
+  20:	0a c0       	rjmp	.+20     	; 0x36 <__bad_interrupt>
+  22:	09 c0       	rjmp	.+18     	; 0x36 <__bad_interrupt>
+  24:	08 c0       	rjmp	.+16     	; 0x36 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+  32:	0f d0       	rcall	.+30     	; 0x52 <main>
+  34:	20 c0       	rjmp	.+64     	; 0x76 <_exit>
+
+00000036 <__bad_interrupt>:
+  36:	e4 cf       	rjmp	.-56     	; 0x0 <__vectors>
+
+00000038 <pwmAllPins>:
+  38:	9c ef       	ldi	r25, 0xFC	; 252
+  3a:	92 bb       	out	0x12, r25	; 18
+  3c:	90 e0       	ldi	r25, 0x00	; 0
+  3e:	98 17       	cp	r25, r24
+  40:	08 f0       	brcs	.+2      	; 0x44 <__SREG__+0x5>
+  42:	12 ba       	out	0x12, r1	; 18
+  44:	2a e0       	ldi	r18, 0x0A	; 10
+  46:	2a 95       	dec	r18
+  48:	f1 f7       	brne	.-4      	; 0x46 <__SREG__+0x7>
+  4a:	9f 5f       	subi	r25, 0xFF	; 255
+  4c:	9f 3f       	cpi	r25, 0xFF	; 255
+  4e:	b9 f7       	brne	.-18     	; 0x3e <__SP_H__>
+  50:	08 95       	ret
+
+00000052 <main>:
+  52:	0f 93       	push	r16
+  54:	1f 93       	push	r17
+  56:	8c ef       	ldi	r24, 0xFC	; 252
+  58:	81 bb       	out	0x11, r24	; 17
+  5a:	01 e0       	ldi	r16, 0x01	; 1
+  5c:	10 e0       	ldi	r17, 0x00	; 0
+  5e:	11 23       	and	r17, r17
+  60:	19 f0       	breq	.+6      	; 0x68 <main+0x16>
+  62:	1f 3f       	cpi	r17, 0xFF	; 255
+  64:	19 f0       	breq	.+6      	; 0x6c <main+0x1a>
+  66:	03 c0       	rjmp	.+6      	; 0x6e <main+0x1c>
+  68:	01 e0       	ldi	r16, 0x01	; 1
+  6a:	01 c0       	rjmp	.+2      	; 0x6e <main+0x1c>
+  6c:	0f ef       	ldi	r16, 0xFF	; 255
+  6e:	10 0f       	add	r17, r16
+  70:	81 2f       	mov	r24, r17
+  72:	e2 df       	rcall	.-60     	; 0x38 <pwmAllPins>
+  74:	f4 cf       	rjmp	.-24     	; 0x5e <main+0xc>
+
+00000076 <_exit>:
+  76:	f8 94       	cli
+
+00000078 <__stop_program>:
+  78:	ff cf       	rjmp	.-2      	; 0x78 <__stop_program>
